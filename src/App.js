@@ -1,26 +1,37 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Provider } from 'react-redux';
+import { Container } from 'reactstrap';
+import { PersistGate } from 'redux-persist/integration/react';
+import { BrowserRouter as Router, Route } from "react-router-dom";
+
+import Register from './screens/user/Register';
+import Login from './screens/user/Login';
+import Dashboard from './screens/Dashboard';
+import Profile from './screens/user/Profile';
+import Header from './screens/Header';
+import AdLayout from './screens/ad/AdLayout';
+
+import { store, persistor } from './store/store';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <Router>
+            <div>
+              <Header></Header>
+              <Container>
+                <Route path="/" exact component={Dashboard} />
+                <Route path="/login" component={Login} />
+                <Route path="/register" component={Register} />
+                <Route path="/profile" component={Profile} />
+                <Route path="/ad/:adId" component={AdLayout} />
+              </Container>
+            </div>
+          </Router>
+        </PersistGate>
+      </Provider>
     );
   }
 }
